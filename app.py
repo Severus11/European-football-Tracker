@@ -14,10 +14,18 @@ st.markdown('''This app performs simple webscraping of Premier League teams data
 st.sidebar.header('User input features')
 
 list_league = ['Premier League', 'Bundesliga', 'La Liga','Ligue 1', 'Serie A']
-selected-league = st.sidebar.selectbox('Select league', list_league,list_league )
-selected-year = st.sidebar.selectbox('Choose Season', list(reversed(range(1950, 2020))))
+selected_league = st.sidebar.selectbox('Select league', list_league,list_league )
+selected_year = st.sidebar.selectbox('Choose Season', list(reversed(range(1950, 2020))))
 
 @st.cache
-def load_data(year):
-    query= selected-league + 'reference' + selected-year
-    
+def load_data(league, year):
+    query= league + 'reference' + year
+    for j in search(query, tld="com", num=1, stop=1, pause =2):
+        url = j
+    html = pd.read_html(url, header =1)
+    df= html[0]
+    raw = df.drop(df[df.Age == 'Age'].index) 
+    raw = raw.fillna(0)
+    playerstats = raw.drop(['Rk'], axis=1)
+    return playerstats
+playerstats = load_data(selected_year)
