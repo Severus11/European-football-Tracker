@@ -8,29 +8,30 @@ import matplotlib.pyplot as plt
 st.title('Premier League Tracker')
 
 st.markdown('''This app performs simple webscraping of Premier League teams data!
-* 
+
 * **Data source:** [fbref.com](https://fbref.com/en/comps/9/Premier-League-Stats).''')
 
 st.sidebar.header('User input features')
 
 list_league = ['Premier League', 'Bundesliga', 'La Liga','Ligue 1', 'Serie A']
 selected_league = st.sidebar.selectbox('Select league', ('Premier League', 'Bundesliga', 'La Liga','Ligue 1', 'Serie A'))
-selected_year = st.sidebar.selectbox('Choose Season', list(reversed(range(1950, 2021))))
-def load_query(query):
-    for j in search(query, tld="com", num=1, stop=1, pause =2):
-        url = j
-    return url
+selected_year = st.sidebar.selectbox('Choose Season', list(reversed(range(1950, 2020 ))))
+
 @st.cache
 def load_data(league, year):
-    query= league + 'reference' + str(year)    
-    url = load_query(query)
+    global url
+    query= league + 'reference' + str(year) 
+    for j in search(query, tld="com", num=1, stop=1, pause =1):
+        url = j   
+    #url = load_query(query)
     html = pd.read_html(url, header =0)
     df= html[0]
-    raw=df.drop(['Attendance','Last 5', 'Goalkeeper', 'Notes','GD','xGA','xGD'], axis = 1)
+    raw=df[['Rk','Squad','MP','W', 'D','L','GF','GA','Pts','xG','Top Team Scorer']]
     rankings_table=raw.rename(columns={'Squad':'Teams','Rk':'Pos'})
     return rankings_table
 
 league_rankings= load_data(selected_league,selected_year)
+print(league_rankings)
 
 teams = sorted(league_rankings.Teams.unique())
 selected_team = st.sidebar.multiselect('Teams', teams, teams)
