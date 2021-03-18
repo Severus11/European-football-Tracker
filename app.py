@@ -6,7 +6,7 @@ from googlesearch import search
 from PIL import Image 
 
 image = Image.open('wc1753693 (2).jpg')
-
+ 
 
 
 st.title('Premier football Tracker')
@@ -27,7 +27,6 @@ def load_data(league, year):
     query= league + 'reference' + str(year-1) 
     for j in search(query, tld="com", num=1, stop=1, pause =1):
         url = j   
-    #url = load_query(query)
     html = pd.read_html(url, header =0)
     df= html[0]
     raw=df[['Rk','Squad','MP','W', 'D','L','GF','GA','Pts','xG','Top Team Scorer']]
