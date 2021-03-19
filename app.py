@@ -3,9 +3,9 @@ import numpy as np
 import pandas as pd 
 import base64
 from googlesearch import search
-#from PIL import Image 
+from PIL import Image 
 
-#image = Image.open('wc1753693 (2).jpg')
+image = Image.open('wc1753693 (2).jpg')
  
 
 
@@ -14,7 +14,7 @@ st.title('Premier football Tracker')
 st.markdown('''Now keep a close eye on your favorite teams across Europe's top 5 leagues ! 
 
 * **Data source:** [fbref.com](https://fbref.com/en/comps/9/Premier-League-Stats).''')
-#st.image(image, use_column_width=True)
+st.image(image, use_column_width=True)
 
 st.sidebar.header('User input features')
 
